@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProductInventory.Api.Data;
 using ProductInventory.Api.Dtos;
@@ -6,6 +7,9 @@ using ProductInventory.Api.Models;
 
 namespace ProductInventory.Api.Controllers
 {
+    [AllowAnonymous]
+    [ApiController]
+    [Route("api/[controller]")]
     public class ProductsController : Controller
     {
         private readonly AppDbContext _context;        
@@ -14,11 +18,11 @@ namespace ProductInventory.Api.Controllers
             _context = context;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<PagedResult<ProductDto>>> Get(
-        string? search = null,
+        [HttpGet("GetProduct")]
+        public async Task<ActionResult<PagedResult<ProductDto>>> GetProduct(
+        string search = null,
         int? categoryId = null,
-        string? sort = null, 
+        string sort = null, 
         int page = 1,
         int pageSize = 10)
         {
@@ -43,11 +47,11 @@ namespace ProductInventory.Api.Controllers
             // Sorting
             query = sort?.ToLower() switch
             {
-                "name:desc" => query.OrderByDescending(p => p.Name),
-                "price:asc" => query.OrderBy(p => p.Price),
-                "price:desc" => query.OrderByDescending(p => p.Price),
-                "quantity:asc" => query.OrderBy(p => p.Quantity),
-                "quantity:desc" => query.OrderByDescending(p => p.Quantity),
+                "Name:desc" => query.OrderByDescending(p => p.Name),
+                "Price:asc" => query.OrderBy(p => p.Price),
+                "Price:desc" => query.OrderByDescending(p => p.Price),
+                "Quantity:asc" => query.OrderBy(p => p.Quantity),
+                "Quantity:desc" => query.OrderByDescending(p => p.Quantity),
                 _ => query.OrderBy(p => p.Name)
             };
 
@@ -60,7 +64,6 @@ namespace ProductInventory.Api.Controllers
             p.Id, p.Name, p.Price, p.Quantity,
             p.CategoryId, p.Category!.Name, p.Created))
             .ToListAsync();
-
 
             return new PagedResult<ProductDto> { Items = items, TotalCount = total };
         }

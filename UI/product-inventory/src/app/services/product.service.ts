@@ -1,9 +1,47 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+
+export interface Product {
+  id: number;
+  name: string;
+  price: number;
+  quantity: number;
+  categoryId: number;
+  created: string;
+}
+
+export interface ProductResponse {
+  items: Product[];
+  totalCount: number;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
 
-  constructor() { }
+  private apiUrl = 'https://localhost:7157/api/Products';
+
+  constructor(private http: HttpClient) { }
+
+  getProducts(): Observable<ProductResponse> {
+    return this.http.get<ProductResponse>(`${this.apiUrl}/GetProduct`);
+  }
+
+  getProduct(id: number): Observable<Product> {
+    return this.http.get<Product>(`${this.apiUrl}/${id}`);
+  }
+
+  addProduct(product: Product): Observable<Product> {
+    return this.http.post<Product>(this.apiUrl, product);
+  }
+
+  updateProduct(id: number, product: Product): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}/${id}`, product);
+  }
+
+  deleteProduct(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
 }

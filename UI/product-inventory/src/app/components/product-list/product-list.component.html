@@ -1,0 +1,17 @@
+ <h2>Product Inventory</h2>
+    <button routerLink="/add" class="btn btn-primary">Add Product</button>
+    <table border="1" cellpadding="8" cellspacing="0">
+      <tr>
+        <th>Name</th><th>Price</th><th>Quantity</th><th>Category</th><th>Actions</th>
+      </tr>
+      <tr *ngFor="let p of products">
+        <td>{{p.name}}</td>
+        <td>{{p.price}}</td>
+        <td>{{p.quantity}}</td>
+        <td>{{p.categoryId}}</td>
+        <td>
+          <button [routerLink]="['/edit', p.id]">Edit</button>
+          <button (click)="delete(p.id)">Delete</button>
+        </td>
+      </tr>
+    </table>

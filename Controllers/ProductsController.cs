@@ -96,7 +96,7 @@ namespace ProductInventory.Api.Controllers
 
 
             var created = await _context.Products.Include(x => x.Category).FirstAsync(x => x.Id == p.Id);
-            var result = new ProductDto(created.Id, created.Name, created.Price, created.Quantity, created.CategoryId, created.Category!.Name, created.CreatedAt);
+            var result = new ProductDto(created.Id, created.Name, created.Price, created.Quantity, created.CategoryId, created.Category!.Name, created.Created);
             return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
         }
 

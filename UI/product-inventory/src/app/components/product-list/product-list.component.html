@@ -1,24 +1,36 @@
- <h2>Product Inventory</h2>
-    <button routerLink="/add" class="btn btn-primary">Add Product</button>
-    <table border="1" cellpadding="8" cellspacing="0">
-      <tr>
-        <th>Name</th><th>Price</th><th>Quantity</th><th>Category</th><th>Actions</th>
-      </tr>
-      <tr *ngFor="let p of products">
-        <td>{{p.name}}</td>
-        <td>{{p.price}}</td>
-        <td>{{p.quantity}}</td>
-        <!-- Category dropdown -->
-        <td>
-          <select [(ngModel)]="p.categoryId" (change)="updateCategory(p)">
-            <option *ngFor="let c of categories" [value]="c.id">
-              {{ c.name }}
-            </option>
-          </select>
-        </td>
-        <td>
-          <button [routerLink]="['/edit', p.id]">Edit</button>
-          <button (click)="delete(p.id)">Delete</button>
-        </td>
-      </tr>
-    </table>
+<h2>Product Inventory</h2>
+<button routerLink="/add" class="btn btn-primary">Add Product</button>
+
+<igx-grid [data]="products" [autoGenerate]="false" height="500px" width="100%">
+  
+  <!-- Name -->
+  <igx-column field="name" header="Name"></igx-column>
+
+  <!-- Price -->
+  <igx-column field="price" header="Price"></igx-column>
+
+  <!-- Quantity -->
+  <igx-column field="quantity" header="Quantity"></igx-column>
+
+  <!-- Category Dropdown -->
+  <igx-column field="categoryId" header="Category">
+    <ng-template igxCell let-cell="cell">
+      <select [(ngModel)]="cell.row.data.categoryId" (change)="updateCategory(cell.row.data)">
+        <option *ngFor="let c of categories" [value]="c.id">
+          {{ c.name }}
+        </option>
+      </select>
+    </ng-template>
+  </igx-column>
+
+  <!-- Actions -->
+  <igx-column header="Actions">
+    <ng-template igxCell let-cell="cell">
+      <button [routerLink]="['/edit', cell.row.data.id]">Edit</button>
+      <button (click)="delete(cell.row.data.id)">Delete</button>
+    </ng-template>
+  </igx-column>
+
+  <!-- Built-in Pagination -->
+  <igx-paginator [perPage]="10"></igx-paginator>
+</igx-grid>

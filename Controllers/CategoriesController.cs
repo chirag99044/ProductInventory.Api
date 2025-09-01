@@ -18,5 +18,14 @@ namespace ProductInventory.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Category>>> Get() =>
         await _context.categories.AsNoTracking().OrderBy(c => c.Name).ToListAsync();
+
+        [HttpGet("GetCategories")]
+        public async Task<IActionResult> GetCategories()
+        {
+            var categories = await _context.categories
+                .Select(c => new { c.Id, c.Name })
+                .ToListAsync();
+            return Ok(categories);
+        }
     }
 }

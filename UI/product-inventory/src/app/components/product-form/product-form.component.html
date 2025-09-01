@@ -10,7 +10,12 @@
       <input type="number" [(ngModel)]="product.quantity" name="quantity" required><br>
       
       <label>Category:</label>
-      <input type="number" [(ngModel)]="product.categoryId" name="category" required><br>
+      <select [(ngModel)]="product.categoryId" name="category" required>
+        <option *ngFor="let c of categories" [value]="c.id">
+          {{ c.name }}
+        </option>
+      </select><br>
+
       
       <button type="submit">Save</button>
       <button type="button" (click)="cancel()">Cancel</button>

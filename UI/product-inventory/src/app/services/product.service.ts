@@ -16,32 +16,41 @@ export interface ProductResponse {
   totalCount: number;
 }
 
+export interface Category {
+  id: number;
+  name: string;
+}
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
 
-  private apiUrl = 'https://localhost:7157/api/Products';
+  private apiUrl = 'https://localhost:7157/api';
 
   constructor(private http: HttpClient) { }
 
   getProducts(): Observable<ProductResponse> {
-    return this.http.get<ProductResponse>(`${this.apiUrl}/GetProduct`);
+    return this.http.get<ProductResponse>(`${this.apiUrl}/Products/GetProduct`);
   }
 
   getProduct(id: number): Observable<Product> {
-    return this.http.get<Product>(`${this.apiUrl}/${id}`);
+    return this.http.get<Product>(`${this.apiUrl}/Products/${id}`);
   }
 
   addProduct(product: Product): Observable<Product> {
-    return this.http.post<Product>(this.apiUrl, product);
+    return this.http.post<Product>(`${this.apiUrl}/Products`, product);
   }
 
   updateProduct(id: number, product: Product): Observable<void> {
-    return this.http.put<void>(`${this.apiUrl}/${id}`, product);
+    return this.http.put<void>(`${this.apiUrl}/Products/${id}`, product);
   }
 
   deleteProduct(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    return this.http.delete<void>(`${this.apiUrl}/Products/${id}`);
   }
+
+  getCategories(): Observable<Category[]> {
+  return this.http.get<Category[]>(`${this.apiUrl}/Categories/GetCategories`);
+}
+
 }

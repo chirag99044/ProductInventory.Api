@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Product, ProductService } from '../../services/product.service';
+import { Category, Product, ProductService } from '../../services/product.service';
 
 @Component({
   selector: 'app-product-form',
@@ -13,6 +13,7 @@ import { Product, ProductService } from '../../services/product.service';
 export class ProductFormComponent implements OnInit{
  id!: number;
   product: Product = { id: 0, name: '', price: 0, quantity: 0,categoryId: 0, created: '' };
+  categories: Category[] = [];
 
   constructor(
     private service: ProductService,
@@ -21,6 +22,7 @@ export class ProductFormComponent implements OnInit{
   ) {}
 
   ngOnInit() {
+    this.loadCategories();
     this.id = Number(this.route.snapshot.paramMap.get('id'));
     if(this.id) {
       this.service.getProduct(this.id).subscribe(res => this.product = res);
@@ -35,6 +37,12 @@ export class ProductFormComponent implements OnInit{
     }
   }
 
+  loadCategories() {
+    this.service.getCategories().subscribe(res => {
+      this.categories = res;
+    });
+  }
+  
   cancel() {
     this.router.navigate(['/']);
   }

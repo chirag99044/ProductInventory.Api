@@ -8,7 +8,14 @@
         <td>{{p.name}}</td>
         <td>{{p.price}}</td>
         <td>{{p.quantity}}</td>
-        <td>{{p.categoryId}}</td>
+        <!-- Category dropdown -->
+        <td>
+          <select [(ngModel)]="p.categoryId" (change)="updateCategory(p)">
+            <option *ngFor="let c of categories" [value]="c.id">
+              {{ c.name }}
+            </option>
+          </select>
+        </td>
         <td>
           <button [routerLink]="['/edit', p.id]">Edit</button>
           <button (click)="delete(p.id)">Delete</button>

@@ -29,7 +29,7 @@ export class ProductService {
 
   constructor(private http: HttpClient) { }
 
-  getProducts(page:number = 1, pageSize:number = 10): Observable<ProductResponse> {
+  getProducts(page:number, pageSize:number): Observable<ProductResponse> {
     return this.http.get<ProductResponse>(`${this.apiUrl}/Products/GetProduct?page=${page}&pageSize=${pageSize}`);
   }
 

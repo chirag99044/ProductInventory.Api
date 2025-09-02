@@ -2,7 +2,7 @@
 <button routerLink="/add" class="btn btn-primary">Add Product</button>
 
 <igx-grid [data]="products" #grid1 [autoGenerate]="false" height="500px" width="100%">
-  
+
   <!-- Name -->
   <igx-column field="name" header="Name"></igx-column>
 
@@ -30,37 +30,5 @@
       <button (click)="delete(cell.row.data.id)">Delete</button>
     </ng-template>
   </igx-column>
-<igx-paginator
-  [perPage]="pageSize"
-  [totalRecords]="totalCount"
-  (perPageChange)="onPageSizeChange($event)"
-  (pageChange)="onPageChange($event)">
-
-  <ng-template igxPaginator let-paginator>
-    <div class="flex items-center justify-between w-full">
-      <!-- Items per page -->
-      <div class="flex items-center">
-        <span>Items per page:</span>
-        <igx-select [(ngModel)]="paginator.perPage" class="ml-2 w-16">
-          <igx-select-item *ngFor="let option of [5,10,15,20]" [value]="option">
-            {{ option }}
-          </igx-select-item>
-        </igx-select>
-      </div>
-
-      <!-- Page navigation -->
-      <div class="flex items-center gap-2">
-        <button igxButton="flat" (click)="paginator.previousPage()" [disabled]="paginator.isFirstPage">
-          Previous
-        </button>
-        <span>{{ paginator.page + 1 }} of {{ paginator.totalPages }}</span>
-        <button igxButton="flat" (click)="paginator.nextPage()" [disabled]="paginator.isLastPage">
-          Next
-        </button>
-      </div>
-    </div>
-  </ng-template>
-</igx-paginator>
-
+  <igx-paginator [perPage]="pageSize" [page]="page" [totalRecords]="totalCount" (pageChange)="onPageChange($event)"  (perPageChange)="onPageSizeChange($event)"></igx-paginator>
 </igx-grid>
-
